@@ -5,8 +5,10 @@ public class DirectionCalculator {
 	public DirectionCalculator() {
 	}
 	
-	public void getDirection() {
+	public Path getDirection() {
+		Path dir = new Path();
 		
+		return dir;
 	}
 	
 }
