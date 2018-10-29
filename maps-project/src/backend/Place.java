@@ -4,13 +4,11 @@ import java.awt.geom.Point2D;
 
 public class Place {
 
-	private long longitude;
-	private long latitude;
+	private Coordinates coords;
 	private String name;
 
 	public Place(int latitude, int longitude) {
-		this.longitude = longitude;
-		this.latitude = latitude;		
+		this.coords = new Coordinates(latitude, longitude);		
 	}
 	
 	public Place(String name, int latitude, int longitude) {
@@ -20,7 +18,7 @@ public class Place {
 	}
 	
 	public Point2D getCoordinates() {
-		return new Point2D(latitude, longitude);
+		return coords;
 	}
 	
 	public long getLatitude() {
