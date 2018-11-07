@@ -1,44 +1,46 @@
 package backend;
 
-import java.awt.geom.Point2D;
-
 public class Place {
 
-	private Coordinates coords;
 	private String name;
+	private Coordinates coords;
 
-	public Place(int latitude, int longitude) {
-		this.coords = new Coordinates(latitude, longitude);		
+	public Place(float latitude, float longitude) {
+		this.name = null;
+		this.coords = new Coordinates(latitude, longitude);
 	}
 	
-	public Place(String name, int latitude, int longitude) {
+	public Place(String name, float latitude, float longitude) {
 		this.name = name;
-		this.longitude = longitude;
-		this.latitude = latitude;
+		this.coords = new Coordinates(latitude, longitude);
 	}
 	
-	public Point2D getCoordinates() {
+	public Coordinates getCoordinates() {
 		return coords;
 	}
 	
-	public long getLatitude() {
-		return latitude;
+	public String getName() {
+		return name;
 	}
 	
-	public long getLongitude() {
-		return longitude;
+	public float getLatitude() {
+		return coords.getLatitude();
 	}
 	
-	public void setLatitude(long l) {
-		latitude = l;
-	}
-	
-	public void setLongitude(long l) {
-		longitude = l;
+	public float getLongitude() {
+		return coords.getLongitude();
 	}
 	
 	public void setName(String n) {
 		name = n;
+	}
+	
+	public void setLatitude(float l) {
+		coords.setLatitude(l);
+	}
+	
+	public void setLongitude(float l) {
+		coords.setLongitude(l);
 	}
 
 }

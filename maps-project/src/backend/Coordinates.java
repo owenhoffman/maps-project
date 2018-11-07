@@ -1,7 +1,5 @@
 package backend;
 
-import java.awt.geom.Point2D;
-
 public class Coordinates {
 
 	private float longitude;
@@ -12,19 +10,19 @@ public class Coordinates {
 		this.latitude = latitude;		
 	}
 	
-	public long getLatitude() {
+	public float getLatitude() {
 		return latitude;
 	}
 	
-	public long getLongitude() {
+	public float getLongitude() {
 		return longitude;
 	}
 	
-	public void setLatitude(long l) {
+	public void setLatitude(float l) {
 		latitude = l;
 	}
 	
-	public void setLongitude(long l) {
+	public void setLongitude(float l) {
 		longitude = l;
 	}
 }
