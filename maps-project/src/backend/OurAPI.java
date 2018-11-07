@@ -10,6 +10,10 @@ public class OurAPI {
 		calc = new DirectionCalculator();
 	}
 	
+	public void pathToJSON(Path path) {
+		
+	}
+	
 	// Note: this is not returning void
 	public Path getDirection(String origin, String destination) throws Exception {
 		
@@ -19,9 +23,8 @@ public class OurAPI {
 		}
 		
 		// pass arguments to DirectionCalculator for result
-		Path dir = calc.getDirection();
 		
-		return dir;
+		return null;
 	}
 	
 	public void getDirection(Point2D.Float origin, Point2D.Float destination) {

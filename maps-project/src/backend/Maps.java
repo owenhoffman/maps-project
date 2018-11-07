@@ -7,7 +7,8 @@ public class Maps {
 		
 		GoogleAPI google = new GoogleAPI(apiKey);
 		
-		google.directionAPI("Nebraska_Innovation_Campus", "University_of_Nebraska_Lincoln", "driving");
+		google.directionAPI(google.placeAPI("University_of_Nebraska_Lincoln"), google.placeAPI("University_of_Maryland"), "driving");
 
+		
 	}
 }
