@@ -7,8 +7,9 @@ public class Maps {
 		
 		GoogleAPI google = new GoogleAPI(apiKey);
 		
-		google.directionAPI(google.placeAPI("University_of_Nebraska_Lincoln"), google.placeAPI("University_of_Maryland"), "driving");
+		Path test = google.directionAPI(google.placeAPI("Greenbelt_Metro_Station"), 
+				google.placeAPI("Dupont_Circle_station"), "transit");
 
-		
+		System.out.print(test);
 	}
 }

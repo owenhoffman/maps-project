@@ -31,6 +31,9 @@ public class GoogleAPI {
 					+ "origin=" + origin.getLatitude() + "," + origin.getLongitude() 
 					+ "&destination=" + destination.getLatitude() + "," + destination.getLongitude() 
 					+ "&mode=" + mode + "&key=" + apiKey;
+			
+			// I have it for debugging purpose.
+			System.out.println(targetURL);
 
 			JSONObject jsonObject = new JSONObject(readURL(targetURL));
 			JSONObject legs = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
@@ -123,7 +126,7 @@ public class GoogleAPI {
 		if (unit.equals("ft")) {
 			num = num / 5280;
 		} // Duration conversion
-		else if (unit.equals("hours")) {
+		else if (unit.equals("hours") || unit.equals("hour")) {
 			num = num * 60;
 			num = num + Float.parseFloat(numAndUnit[2]);
 		}

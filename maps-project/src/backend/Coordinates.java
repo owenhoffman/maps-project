@@ -10,6 +10,10 @@ public class Coordinates {
 		this.latitude = latitude;		
 	}
 	
+	public String toString() {
+		return latitude + ", " + longitude;
+	}
+	
 	public float getLatitude() {
 		return latitude;
 	}
