@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.*;
 import backend.Path;
@@ -33,15 +34,22 @@ public class GoogleAPI {
 					+ "&mode=" + mode + "&key=" + apiKey;
 			
 			// I have it for debugging purpose.
-			System.out.println(targetURL);
+			//System.out.println(targetURL);
 
 			JSONObject jsonObject = new JSONObject(readURL(targetURL));
 			JSONObject legs = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
 			float totalDistance = convertUnit(legs.getJSONObject("distance").getString("text"));
 			float totalDuration = convertUnit(legs.getJSONObject("duration").getString("text"));
-			JSONArray steps = legs.getJSONArray("steps");
 			
 			ArrayList<PathSection> pathList = new ArrayList<PathSection>();
+			if (mode.equals("driving")) {
+				PathSection section = new PathSection(totalDistance, totalDuration, mode, origin, destination, "Drive to " + destination);
+				pathList.add(section);
+				return new Path(totalDistance, totalDuration, origin, destination, pathList);
+			}
+			
+			JSONArray steps = legs.getJSONArray("steps");
+			
 			for (Object step : steps) {
 				JSONObject stepOb = (JSONObject) step;
 				float distance = convertUnit(stepOb.getJSONObject("distance").getString("text"));
@@ -58,7 +66,7 @@ public class GoogleAPI {
 				pathList.add(section);
 			}
 			
-			return new Path(totalDistance, totalDuration, pathList);
+			return new Path(totalDistance, totalDuration, origin, destination, pathList);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,14 +74,20 @@ public class GoogleAPI {
 		}
 	}
 	
-	public void distanceMatrixAPI(String origin, String destination) {
+	public float distanceMatrixAPI(Coordinates origin, Coordinates destination) {
 		try {
 			String targetURL = "https://maps.googleapis.com/maps/api/distancematrix/json?"
-					+ "origins=" + origin + "&destinations=" + destination 
+					+ "origins=" + origin.getLatitude() + "," + origin.getLongitude() 
+					+ "&destinations=" + destination.getLatitude() + "," + destination.getLongitude() 
 					+ "&key=" + apiKey;
+			String distanceText = new JSONObject(readURL(targetURL)).getJSONArray("rows")
+					.getJSONObject(0).getJSONArray("elements").getJSONObject(0)
+					.getJSONObject("distance").getString("text");
+			return convertUnit(distanceText);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return Float.MAX_VALUE;
 		}
 	}
 	
@@ -90,6 +104,37 @@ public class GoogleAPI {
 	        float longitude = locationObject.getFloat("lng");
 	        
 	        return new Coordinates(latitude, longitude);
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	// return nearby train stations
+	public List<Place> NearbySearchAPI(Coordinates currentLoc, float radius) {
+		try {
+			String targetURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
+					+ "location=" + currentLoc.getLatitude() + "," + currentLoc.getLongitude() 
+					+ "&radius=" + radius*1609.34 + "&type=train_station"
+					+ "&key=" + apiKey;
+			
+			ArrayList<Place> placeList = new ArrayList<Place>();
+			JSONObject jsonObject = new JSONObject(readURL(targetURL));
+			JSONArray resultArray = jsonObject.getJSONArray("results");
+			for (Object ob : resultArray) {
+				JSONObject placeOb = (JSONObject) ob;
+				JSONObject locationObject = placeOb.getJSONObject("geometry").getJSONObject("location");
+		        float latitude = locationObject.getFloat("lat");
+		        float longitude = locationObject.getFloat("lng");
+		        String name = placeOb.getString("name");
+		        Place place = new Place(name, latitude, longitude);
+		        placeList.add(place);
+			}
+	        if (placeList.isEmpty()) {
+	        	return null;
+	        }
+	        return placeList;
 	        
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -125,6 +170,10 @@ public class GoogleAPI {
 		// Distance conversion
 		if (unit.equals("ft")) {
 			num = num / 5280;
+		} else if (unit.equals("km")) {
+			num = num / (float) 1.60934;
+		} else if (unit.equals("m")) {
+			num = num / (float) 1609.34;
 		} // Duration conversion
 		else if (unit.equals("hours") || unit.equals("hour")) {
 			num = num * 60;

@@ -3,13 +3,15 @@ package backend;
 public class Maps {
 	public static void main(String[] args) {
 		
-		String apiKey = "AIzaSyBrjEuT3xE8G7yalJsZ4Flqc1mADZSsA8g";
+		GoogleAPI google = new GoogleAPI("AIzaSyBrjEuT3xE8G7yalJsZ4Flqc1mADZSsA8g");
+		OurAPI api = new OurAPI();
 		
-		GoogleAPI google = new GoogleAPI(apiKey);
-		
-		Path test = google.directionAPI(google.placeAPI("Greenbelt_Metro_Station"), 
-				google.placeAPI("Dupont_Circle_station"), "transit");
-
-		System.out.print(test);
+		try {
+			Path path = api.getDirection(google.placeAPI("university_of_maryland"),
+					google.placeAPI("baltimore_md"));
+			System.out.println(path);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

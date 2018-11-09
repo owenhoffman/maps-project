@@ -27,6 +27,12 @@ public class PathSection {
 		this.endLoc = endLoc;
 	}
 	
+	public PathSection(String mode, Coordinates startLoc, Coordinates endLoc) {
+		this.mode = mode;
+		this.startLoc = startLoc;
+		this.endLoc = endLoc;
+	}
+	
 	public float getDistance() {
 		return distance;
 	}

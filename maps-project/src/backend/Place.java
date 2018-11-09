@@ -15,6 +15,9 @@ public class Place {
 		this.coords = new Coordinates(latitude, longitude);
 	}
 	
+	public String toString() {
+		return " ---------- \n" + name + "\nCoordinates: " + coords;
+	}
 	public Coordinates getCoordinates() {
 		return coords;
 	}
